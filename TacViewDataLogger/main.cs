@@ -97,6 +97,10 @@ namespace TacViewDataLogger
 
         public Texture2D gameHeightmap;
 
+        public ScenarioWaypoints scenarioWaypoints = new ScenarioWaypoints();
+
+        // public Transform bullseye;
+
 
         private void Start()
         {
@@ -296,7 +300,7 @@ namespace TacViewDataLogger
                 }
 
                 support.WriteLog($"Env Name: {VTScenario.current.envName}");
-
+                
 
                 //Setting a custom hour to simulate the time of day based on the current scenario
                 if (VTScenario.current.envName == "day")
@@ -349,7 +353,8 @@ namespace TacViewDataLogger
                 //// Elapsed time isn't used for anything anymore apparently... I'll keep it around for a reminder of better times.
                 ////missionElapsedTime = FlightSceneManager.instance.missionElapsedTime;
 
-                support.WriteLog("Running Logger");
+                support.WriteLog("WL Running Logger");
+                FlightLogger.Log("Running Logger");
                 runlogger = true;
 
                 // Start the function to save the mission data
@@ -359,8 +364,11 @@ namespace TacViewDataLogger
                 heightmapGeneration.getHeightMap(customScene, TacViewFolder, mapManager);
 
 
-                // Get the airports
+                // Get the airports and bullseye
+                support.WriteLog("getting airports");
                 getAirports();
+                support.WriteLog("test 08768");
+                getBullseye();
             }
 
         }
@@ -503,10 +511,19 @@ namespace TacViewDataLogger
             }
         }
 
+       
+        public void getBullseye()
+        {
+            newEntry = actorProcessor.bullseyeDataEntry(VTScenario.current);
+            support.WriteLog($"WAYPOINT: {VTScenario.current.waypoints.bullseye.GetTransform().position}");
+            dataLog.Append("\n" + newEntry.ACMIString());
+        }
+
         public IEnumerable<CMFlare> getFlares()
         {
             return FindObjectsOfType<CMFlare>();
         }
+
         public IEnumerable<ChaffCountermeasure.Chaff> getChaff()
         {
             var allChaff = new List<ChaffCountermeasure.Chaff>();

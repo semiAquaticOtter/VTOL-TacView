@@ -271,6 +271,31 @@ namespace TacViewDataLogger
             return entry;
         }
 
+        public ACMIDataEntry bullseyeDataEntry(VTScenario scenario)
+        {
+            ACMIDataEntry entry = new ACMIDataEntry();
+            
+            // set an id for the bullseye
+            support.UpdateID(scenario.waypoints.bullseye, false);
+            entry.objectId = support.GetObjectID(scenario.waypoints.bullseye);
+            support.WriteLog($"ACMI Data entry objectId: {entry.objectId}");
+
+            // set the colour (pretty shure bullseye is friendly and bullseyeB is enemy)
+            entry.color = "Blue";
+
+            // coordinates of the bullseye
+            Vector3D coords = support.convertPositionToLatLong_raw(scenario.waypoints.bullseye.GetTransform().transform.position);
+            entry.locData = $"{Math.Round(coords.y, 7)} | {Math.Round(coords.x, 7)} | {Math.Round(coords.z, 7)}";
+
+            // set the type
+            entry._basicTypes = "Bullseye";
+
+            // debug
+            entry.name = "Bullseye";
+            FlightLogger.Log($"Bullseye LocData: {entry.locData}");
+            return entry;
+        }
+
 
         public ACMIDataEntry airportEntry(AirportManager airport)
         {

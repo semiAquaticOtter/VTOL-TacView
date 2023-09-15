@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TacViewDataLogger</RootNamespace>
     <AssemblyName>TacViewDataLogger</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <TargetFrameworkProfile />
@@ -27,9 +27,15 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Builds\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>3</WarningLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Builds\TacViewDataLogger.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="actorProcessor.cs" />
@@ -91,6 +97,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "Z:\Documents\Projects\VTOLVR-TacViewLogger\TacViewDataLogger\bin\Builds\TacViewDataLogger.dll" "F:\SteamLibrary\steamapps\common\VTOL VR\VTOLVR_ModLoader\mods\" /Y</PostBuildEvent>
+    <PostBuildEvent>copy "D:\Test\me\My Mods\VTOLVR-TacviewLogger\TacViewDataLogger\bin\Builds\TacViewDataLogger.dll" "C:\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_ModLoader\mods"</PostBuildEvent>
   </PropertyGroup>
 </Project>
