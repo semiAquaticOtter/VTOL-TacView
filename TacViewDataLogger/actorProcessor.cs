@@ -68,7 +68,8 @@ namespace TacViewDataLogger
             support.UpdateID(actor, false);
 
             PlayerVehicle pilotVeh = PilotSaveManager.currentVehicle;
-            String rcs = DataGetters.getRadarCrossSection(pilotVeh.vehiclePrefab);
+            // String rcs = DataGetters.getRadarCrossSection(pilotVeh.vehiclePrefab);
+            float rcs = 25f;
 
             Vector3D coords = support.convertPositionToLatLong_raw(actor.transform.position);
             double headingNum = Math.Atan2(actor.transform.forward.x, actor.transform.forward.z) * Mathf.Rad2Deg;
@@ -96,17 +97,11 @@ namespace TacViewDataLogger
                 entry.lockedTarget = support.GetObjectID(actor.currentlyTargetingActor);
             }
 
-            if (float.TryParse(rcs, out float rcsFloat))
-            {
-                float a = Radar.EstimateDetectionDistance(rcsFloat, rdr);
-                //support.WriteLog($"Estimated detection distance: {a}");
-                entry.engagementRange = a.ToString();
-            }
-            else
-            {
-                support.WriteLog("Could not estimate detection distance.");
-            }
-
+                        
+            float a = Radar.EstimateDetectionDistance(rcs, rdr);
+            //support.WriteLog($"Estimated detection distance: {a}");
+            entry.engagementRange = a.ToString();
+            
             return entry;
         }
 
@@ -315,6 +310,25 @@ namespace TacViewDataLogger
 
             entry.name = actor.actorName;
             entry.callSign = actor.actorName;
+            return entry;
+        }
+
+        public ACMIDataEntry WaypointDataEntry(Waypoint waypoint)
+        {
+            ACMIDataEntry entry = new ACMIDataEntry();
+
+            support.UpdateID(waypoint, false);
+            entry.objectId = support.GetObjectID(waypoint);
+
+            entry.color = "Blue";
+
+            Vector3D coords = support.convertPositionToLatLong_raw(waypoint.GetTransform().transform.position);
+            entry.locData = $"{Math.Round(coords.y, 7)} | {Math.Round(coords.x, 7)} | {Math.Round(coords.z, 7)}";
+
+            entry._basicTypes = "Navaid+Static+Waypoint";
+
+            entry.name = waypoint.name;
+
             return entry;
         }
 

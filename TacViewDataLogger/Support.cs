@@ -116,7 +116,7 @@ namespace TacViewDataLogger
 
         public static void WriteErrorLog(string line)
         {
-            //Debug.LogError($"{Globals.projectName} - {line}");
+            Debug.LogError($"{Globals.projectName} - {line}");
         }
 
         public static List<Actor> getActorsByRoll(Actor.Roles role)

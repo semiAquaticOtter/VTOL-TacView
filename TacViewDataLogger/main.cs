@@ -524,6 +524,11 @@ namespace TacViewDataLogger
             }
         }   
 
+        public IEnumerable<Waypoint> getWaypoints()
+        {
+            return (IEnumerable<Waypoint>)VTScenario.current.GetUnitOrWaypoint("wpt");
+        }
+
         public IEnumerable<CMFlare> getFlares()
         {
             return FindObjectsOfType<CMFlare>();
@@ -626,6 +631,16 @@ namespace TacViewDataLogger
                     //support.WriteLog("Error - Got a null actor!");
                 }
             }
+            // Getting waypoints and processing them
+            foreach (var waypoint in getWaypoints())
+            {
+                acmiString = "";
+                support.UpdateID(waypoint);
+
+                newEntry = actorProcessor.WaypointDataEntry(waypoint);
+                acmiString = newEntry.ACMIString();
+                dataLog.Append("\n" + acmiString);
+            }
 
             // Getting flares and processing them
             acmiString = "";
@@ -652,6 +667,7 @@ namespace TacViewDataLogger
                     dataLog.Append("\n" + acmiString);
                 }
             }
+
             // Getting Chaff and processing them
             acmiString = "";
             foreach (var chaff in getChaff())
@@ -762,6 +778,7 @@ namespace TacViewDataLogger
 
             return entry;
         }
+
         public ACMIDataEntry buildChaffEntry(ChaffCountermeasure.Chaff chaff)
         {
             ACMIDataEntry entry = new ACMIDataEntry();
