@@ -353,7 +353,7 @@ namespace TacViewDataLogger
                 //// Elapsed time isn't used for anything anymore apparently... I'll keep it around for a reminder of better times.
                 ////missionElapsedTime = FlightSceneManager.instance.missionElapsedTime;
 
-                support.WriteLog("WL Running Logger");
+                support.WriteLog("Running Logger");
                 FlightLogger.Log("Running Logger");
                 runlogger = true;
 
@@ -513,9 +513,15 @@ namespace TacViewDataLogger
 
         public void getBullseye()
         {
-            newEntry = actorProcessor.bullseyeDataEntry(VTScenario.current);
-            support.WriteLog($"WAYPOINT: {VTScenario.current.waypoints.bullseye.GetTransform().position}");
-            dataLog.Append("\n" + newEntry.ACMIString());
+            if (VTScenario.current.waypoints.bullseye != null)
+            {
+                newEntry = actorProcessor.bullseyeDataEntry(VTScenario.current);
+                dataLog.Append("\n" + newEntry.ACMIString());
+            }
+            else
+            {   
+                FlightLogger.Log("No bullseye found.");
+            }
         }   
 
         public IEnumerable<CMFlare> getFlares()
