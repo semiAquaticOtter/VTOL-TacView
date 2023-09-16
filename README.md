@@ -8,6 +8,8 @@ It's been long time in the making and a fairly significant undertaking for me. T
 
 Just a couple of notes to start off with. I'm not a game developer and I don't work in C#, so I may have taken some shortcuts. I'm well aware this mod is not as well optimized as it could and should be. On large maps with numerous actors this mod *could* introduce significant lag as it loops through and collects all the necessary data. Future iterations will be able to handle this a bit better.
 
+head to [usage](#usage) for instructions.
+
 ## Demos
 Example flight (2v2) on Akutan
 
