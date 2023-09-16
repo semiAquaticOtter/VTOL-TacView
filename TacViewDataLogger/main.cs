@@ -97,7 +97,7 @@ namespace TacViewDataLogger
 
         public Texture2D gameHeightmap;
 
-        public ScenarioWaypoints scenarioWaypoints = new ScenarioWaypoints();
+        // public ScenarioWaypoints scenarioWaypoints = new ScenarioWaypoints();
 
         // public Transform bullseye;
 
@@ -367,7 +367,7 @@ namespace TacViewDataLogger
                 // Get the airports and bullseye
                 support.WriteLog("getting airports");
                 getAirports();
-                support.WriteLog("test 08768");
+                support.WriteLog("getting bullseye");
                 getBullseye();
             }
 
@@ -511,13 +511,12 @@ namespace TacViewDataLogger
             }
         }
 
-       
         public void getBullseye()
         {
             newEntry = actorProcessor.bullseyeDataEntry(VTScenario.current);
             support.WriteLog($"WAYPOINT: {VTScenario.current.waypoints.bullseye.GetTransform().position}");
             dataLog.Append("\n" + newEntry.ACMIString());
-        }
+        }   
 
         public IEnumerable<CMFlare> getFlares()
         {
@@ -549,7 +548,7 @@ namespace TacViewDataLogger
         }
         public IEnumerable<Rocket> getRockets()
         {
-            return Rocket.allFiredRockets;
+            return Rocket.allFiredRockets; 
         }
 
         public IEnumerator writeString()
@@ -850,10 +849,19 @@ namespace TacViewDataLogger
                 //support.WriteLog("Air");
                 entry = actorProcessor.airVehicleDataEntry(actor, entry, isRed, customSceneOffset);
             }
-            else if (actor.role == Actor.Roles.Ground)
+            else if (actor.role == Actor.Roles.Ground && actor.actorName != "SAM Radar")
             {
-                //support.WriteLog("Ground");
+                //support.WriteLog("Ground..");
+                //support.WriteLog($"actorName: {actor.actorName}");
+                //support.WriteLog($"name: {actor.name}");
                 entry = actorProcessor.groundVehicleDataEntry(actor, entry, customSceneOffset);
+            }
+            else if (actor.role == Actor.Roles.Ground && actor.actorName == "SAM Radar")
+            {
+                foreach (Radar rdr in actor.GetRadars())
+                {
+                    entry = actorProcessor.SAMRadarDataEntry(actor, entry, rdr, customSceneOffset);
+                }
             }
             else if (actor.role == Actor.Roles.GroundArmor)
             {

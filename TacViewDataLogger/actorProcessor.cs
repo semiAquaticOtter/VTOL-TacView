@@ -63,6 +63,52 @@ namespace TacViewDataLogger
             return entry;
         }
 
+        public ACMIDataEntry SAMRadarDataEntry(Actor actor, ACMIDataEntry entry, Radar rdr, float customOffset = 0f)
+        {
+            support.UpdateID(actor, false);
+
+            PlayerVehicle pilotVeh = PilotSaveManager.currentVehicle;
+            String rcs = DataGetters.getRadarCrossSection(pilotVeh.vehiclePrefab);
+
+            Vector3D coords = support.convertPositionToLatLong_raw(actor.transform.position);
+            double headingNum = Math.Atan2(actor.transform.forward.x, actor.transform.forward.z) * Mathf.Rad2Deg;
+
+            if (headingNum < 0)
+            {
+                headingNum += 360;
+            }
+
+            Vector3 forward = actor.transform.forward;
+            forward.y = 0f;
+
+            float pitch = VectorUtils.SignedAngle(forward, actor.transform.forward, Vector3.up);
+
+            Vector3 toDirection = Vector3.ProjectOnPlane(actor.transform.up, forward);
+            float roll = VectorUtils.SignedAngle(Vector3.up, toDirection, Vector3.Cross(Vector3.up, forward));
+
+            entry.locData = $"{Math.Round(coords.y, 7)} | {Math.Round(coords.x, 7)} | {Math.Round(coords.z, 7)} | {Math.Round(roll, 2)} | {Math.Round(pitch, 2)} | {Math.Round(headingNum, 2) - customOffset}";
+
+            entry.name = actor.actorName;
+
+
+            if (actor.currentlyTargetingActor != null)
+            {
+                entry.lockedTarget = support.GetObjectID(actor.currentlyTargetingActor);
+            }
+
+            if (float.TryParse(rcs, out float rcsFloat))
+            {
+                float a = Radar.EstimateDetectionDistance(rcsFloat, rdr);
+                support.WriteLog($"Estimated detection distance: {a}");
+                entry.engagementRange = a.ToString();
+            }
+            else
+            {
+                support.WriteLog("Could not estimate detection distance.");
+            }
+
+            return entry;
+        }
 
         public ACMIDataEntry groundVehicleDataEntry(Actor actor, ACMIDataEntry entry, float customOffset = 0f)
         {
@@ -86,6 +132,7 @@ namespace TacViewDataLogger
             entry.locData = $"{Math.Round(coords.y, 7)} | {Math.Round(coords.x, 7)} | {Math.Round(coords.z, 7)} | {Math.Round(roll, 2)} | {Math.Round(pitch, 2)} | {Math.Round(headingNum, 2) - customOffset}";
 
             entry.name = actor.actorName;
+
 
             if (actor.currentlyTargetingActor != null)
             {

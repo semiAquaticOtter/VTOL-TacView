@@ -345,3 +345,8 @@ healthchecksdb
 
 # WinMerge backup files
 *.bak
+
+notes.txt
+
+# the build
+TacViewData/

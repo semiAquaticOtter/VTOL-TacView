@@ -1,0 +1,21 @@
+{
+  "name": "Vtolvr tacview",
+  "description": "TacView Datalogger originally by (nebriv)[https://vtolvr-mods.com/user/nebriv/]",
+  "dll_file": "",
+  "last_edit": 638303896532946046,
+  "pub_id": "",
+  "json_version": "",
+  "version": "1.0.0",
+  "tagline": "",
+  "repository": "",
+  "is_public": false,
+  "unlisted": false,
+  "preview_image": "",
+  "web_preview_image": "",
+  "dependencies": [
+    
+  ],
+  "mod_dependencies": null,
+  "menu_mod": false,
+  "ContentType": 3
+}

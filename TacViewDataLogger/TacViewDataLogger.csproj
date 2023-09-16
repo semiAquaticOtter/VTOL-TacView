@@ -97,6 +97,22 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy "D:\Test\me\My Mods\VTOLVR-TacviewLogger\TacViewDataLogger\bin\Builds\TacViewDataLogger.dll" "C:\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_ModLoader\mods"</PostBuildEvent>
+    <PostBuildEvent>set out="$(SolutionDir)\TacViewMod"
+set modfolder="C:\Program Files (x86)\Steam\steamapps\common\VTOL VR\VTOLVR_ModLoader\mods\TacViewMod"
+
+if not exist %25out%25 (
+    mkdir %25out%25
+)
+if not exist %25out%25\Dependencies (
+    mkdir %25out%25\Dependencies
+)
+
+copy $(TargetPath) %25out%25
+copy "$(SolutionDir)\Builds\info.json" %25out%25
+copy "$(SolutionDir)\Dependencies" %25out%25\Dependencies
+
+copy $(TargetPath) %25modfolder%25
+
+"C:\Program Files\7-Zip\7z.exe" a -r -tzip  $(SolutionDir)\TacViewMod.zip $(SolutionDir)\TacViewMod\*</PostBuildEvent>
   </PropertyGroup>
 </Project>

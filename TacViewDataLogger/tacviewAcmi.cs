@@ -1178,6 +1178,12 @@ FileVersion=2.1
             {
                 outputString += $",{visible}";
             }
+            if(!engagementRange.EndsWith("="))
+            {
+                outputString += "";
+            }
+
+
             //if (!longitude.EndsWith("="))
             //{
             //    outputString += $",{longitude}";
