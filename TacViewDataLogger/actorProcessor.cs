@@ -97,6 +97,7 @@ namespace TacViewDataLogger
                 entry.lockedTarget = support.GetObjectID(actor.currentlyTargetingActor);
             }
 
+            entry._basicTypes = "AntiAircraft";
                         
             float a = Radar.EstimateDetectionDistance(rcs, rdr);
             //support.WriteLog($"Estimated detection distance: {a}");
@@ -317,7 +318,6 @@ namespace TacViewDataLogger
         {
             ACMIDataEntry entry = new ACMIDataEntry();
 
-            support.UpdateID(waypoint, false);
             entry.objectId = support.GetObjectID(waypoint);
 
             entry.color = "Blue";
@@ -339,7 +339,7 @@ namespace TacViewDataLogger
             // set an id for the bullseye
             support.UpdateID(scenario.waypoints.bullseye, false);
             entry.objectId = support.GetObjectID(scenario.waypoints.bullseye);
-            // support.WriteLog($"ACMI Data entry objectId: {entry.objectId}");
+            support.WriteLog($"ACMI Data entry objectId: {entry.objectId}");
 
             // set the colour (pretty shure bullseye is friendly and bullseyeB is enemy)
             entry.color = "Blue";

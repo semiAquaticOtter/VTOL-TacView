@@ -276,9 +276,9 @@ namespace TacViewDataLogger
                 currentVehicle = VTOLAPI.GetPlayersVehicleGameObject();
 
                 support.WriteLog("Creating TacView Directory");
-                System.IO.Directory.CreateDirectory("TacViewDataLogs\\" + DateTime.UtcNow.ToString("yyyy-MM-dd HHmm"));
+                System.IO.Directory.CreateDirectory("TacViewDataLogs\\" + DateTime.Now.ToString("dd-MM-yy HH-mm"));
 
-                TacViewFolder = "TacViewDataLogs\\" + DateTime.UtcNow.ToString("yyyy-MM-dd HHmm") + "\\";
+                TacViewFolder = "TacViewDataLogs\\" + DateTime.Now.ToString("dd-MM-yy HH-mm") + "\\";
 
                 path = @TacViewFolder + "datalog.acmi";
 
@@ -293,7 +293,7 @@ namespace TacViewDataLogger
 
                 // Setting the current recording time
                 support.WriteLog("Writing Reference Time");
-                string timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
+                string timestamp = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ssZ");
                 using (StreamWriter sw = File.AppendText(path))
                 {
                     sw.WriteLine("0,RecordingTime=" + timestamp);
@@ -307,19 +307,19 @@ namespace TacViewDataLogger
                 {
                     using (StreamWriter sw = File.AppendText(path))
                     {
-                        timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd");
-                        string minsec = DateTime.UtcNow.ToString("mm:ss");
+                        timestamp = DateTime.Now.ToString("yyyy-MM-dd");
+                        string minsec = DateTime.Now.ToString("mm:ss");
                         timestamp += $"T13:{minsec}Z";
                         sw.WriteLine("0,ReferenceTime=" + timestamp);
                     }
                 }
                 else if (VTScenario.current.envName == "morning")
-                {
+                {   
                     using (StreamWriter sw = File.AppendText(path))
                     {
-                        timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd");
-                        string minsec = DateTime.UtcNow.ToString("mm:ss");
-                        timestamp += $"T06:{minsec}Z";
+                        timestamp = DateTime.Now.ToString("yyyy-MM-dd");
+                        string minsec = DateTime.Now.ToString("mm:ss");
+                        timestamp += $"T06:{minsec}Z";  
                         sw.WriteLine("0,ReferenceTime=" + timestamp);
                     }
 
@@ -328,8 +328,8 @@ namespace TacViewDataLogger
                 {
                     using (StreamWriter sw = File.AppendText(path))
                     {
-                        timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd");
-                        string minsec = DateTime.UtcNow.ToString("mm:ss");
+                        timestamp = DateTime.Now.ToString("yyyy-MM-dd");
+                        string minsec = DateTime.Now.ToString("mm:ss");
                         timestamp += $"T23:{minsec}Z";
                         sw.WriteLine("0,ReferenceTime=" + timestamp);
                     }
@@ -524,9 +524,9 @@ namespace TacViewDataLogger
             }
         }   
 
-        public IEnumerable<Waypoint> getWaypoints()
+        public object getWaypoints()
         {
-            return (IEnumerable<Waypoint>)VTScenario.current.GetUnitOrWaypoint("wpt");
+            return VTScenario.current.GetUnitOrWaypoint("wpt");
         }
 
         public IEnumerable<CMFlare> getFlares()
@@ -631,16 +631,46 @@ namespace TacViewDataLogger
                     //support.WriteLog("Error - Got a null actor!");
                 }
             }
+
             // Getting waypoints and processing them
+            var pts = VTScenario.current.waypoints;
+            support.WriteLog($"DEBUG: {pts.GetWaypoints().Length}");
+
+            /*
             foreach (var waypoint in getWaypoints())
             {
                 acmiString = "";
                 support.UpdateID(waypoint);
-
-                newEntry = actorProcessor.WaypointDataEntry(waypoint);
-                acmiString = newEntry.ACMIString();
-                dataLog.Append("\n" + acmiString);
+                try
+                {
+                    newEntry = actorProcessor.WaypointDataEntry(waypoint);
+                    //acmiString = newEntry.ACMIString();
+                    //dataLog.Append("\n" + acmiString);
+                    if (knownActors.ContainsKey(support.GetObjectID(waypoint)))
+                    {
+                        oldEntry = knownActors[support.GetObjectID(waypoint)];
+                        acmiString = newEntry.ACMIString(oldEntry);
+                        knownActors[support.GetObjectID(waypoint)] = newEntry;
+                    }
+                    else
+                    {
+                        acmiString = newEntry.ACMIString();
+                        knownActors.Add(support.GetObjectID(waypoint), newEntry);
+                    }
+                    if (acmiString != "")
+                    {
+                        dataLog.Append("\n" + acmiString);
+                    }
+                }
+                catch (Exception e) 
+                {
+                    support.WriteErrorLog($"Error getting waypoints: {e.Message}");
+                    support.WriteErrorLog($"Error stacktrace: {e.StackTrace}");
+                    support.WriteErrorLog($"Error data: {e.Data}");
+                    support.WriteErrorLog($"====================================");
+                }
             }
+            */
 
             // Getting flares and processing them
             acmiString = "";
