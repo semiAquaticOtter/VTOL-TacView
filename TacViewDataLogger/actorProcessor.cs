@@ -320,7 +320,7 @@ namespace TacViewDataLogger
 
             entry.objectId = support.GetObjectID(waypoint);
 
-            entry.color = "Blue";
+            entry.color = "Green";
 
             Vector3D coords = support.convertPositionToLatLong_raw(waypoint.GetTransform().transform.position);
             entry.locData = $"{Math.Round(coords.y, 7)} | {Math.Round(coords.x, 7)} | {Math.Round(coords.z, 7)}";

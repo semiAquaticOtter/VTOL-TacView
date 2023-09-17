@@ -526,7 +526,8 @@ namespace TacViewDataLogger
 
         public object getWaypoints()
         {
-            return VTScenario.current.GetUnitOrWaypoint("wpt");
+            //return VTScenario.current.GetUnitOrWaypoint("wpt");
+            return VTScenario.current.waypoints.GetWaypoints();
         }
 
         public IEnumerable<CMFlare> getFlares()
@@ -632,47 +633,36 @@ namespace TacViewDataLogger
                 }
             }
 
-            // Getting waypoints and processing them
-            var pts = VTScenario.current.waypoints;
-            support.WriteLog($"DEBUG: {pts.GetWaypoints().Length}");
-
-            /*
-            foreach (var waypoint in getWaypoints())
+            foreach (var wpt in VTScenario.current.waypoints.GetWaypoints())
             {
-                acmiString = "";
-                support.UpdateID(waypoint);
-                try
+                if (wpt.name != VTScenario.current.waypoints.bullseye.name)
                 {
-                    newEntry = actorProcessor.WaypointDataEntry(waypoint);
-                    //acmiString = newEntry.ACMIString();
-                    //dataLog.Append("\n" + acmiString);
-                    if (knownActors.ContainsKey(support.GetObjectID(waypoint)))
+                    acmiString = "";
+                    support.UpdateID(wpt);
+
+                    newEntry = actorProcessor.WaypointDataEntry(wpt);
+
+                    if (knownActors.ContainsKey(support.GetObjectID(wpt)))
                     {
-                        oldEntry = knownActors[support.GetObjectID(waypoint)];
+                        oldEntry = knownActors[support.GetObjectID(wpt)];
+
                         acmiString = newEntry.ACMIString(oldEntry);
-                        knownActors[support.GetObjectID(waypoint)] = newEntry;
+                        knownActors[support.GetObjectID(wpt)] = newEntry;
                     }
                     else
                     {
-                        acmiString = newEntry.ACMIString();
-                        knownActors.Add(support.GetObjectID(waypoint), newEntry);
+                        acmiString += newEntry.ACMIString();
+                        knownActors.Add(support.GetObjectID(wpt), newEntry);
                     }
                     if (acmiString != "")
                     {
                         dataLog.Append("\n" + acmiString);
                     }
-                }
-                catch (Exception e) 
+                } else
                 {
-                    support.WriteErrorLog($"Error getting waypoints: {e.Message}");
-                    support.WriteErrorLog($"Error stacktrace: {e.StackTrace}");
-                    support.WriteErrorLog($"Error data: {e.Data}");
-                    support.WriteErrorLog($"====================================");
                 }
             }
-            */
 
-            // Getting flares and processing them
             acmiString = "";
             foreach (var flare in getFlares())
             {
