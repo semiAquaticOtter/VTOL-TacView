@@ -110,6 +110,7 @@ if not exist %25out%25\Dependencies (
 copy $(TargetPath) %25out%25
 copy "$(SolutionDir)\Builds\info.json" %25out%25
 copy "$(SolutionDir)\Dependencies" %25out%25\Dependencies
+xcopy "$(SolutionDir)\TacViewData" "%25out%25\TacViewData"  /e /y /i
 
 copy $(TargetPath) %25modfolder%25
 

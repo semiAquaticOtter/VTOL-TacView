@@ -17,8 +17,7 @@ using UnityEngine.SceneManagement;
 namespace TacViewDataLogger
 {
     static class Globals
-    {
-
+    { 
         public static string projectName = "VTOL VR Tacview Data Logger";
         public static string projectAuthor = "Nebriv,TytanRock,mattidg";
         public static string projectVersion = "v2.7";
@@ -367,8 +366,6 @@ namespace TacViewDataLogger
                 // Get the airports and bullseye
                 support.WriteLog("getting airports");
                 getAirports();
-                support.WriteLog("getting bullseye");
-                getBullseye();
             }
 
         }
@@ -524,12 +521,6 @@ namespace TacViewDataLogger
             }
         }   
 
-        public object getWaypoints()
-        {
-            //return VTScenario.current.GetUnitOrWaypoint("wpt");
-            return VTScenario.current.waypoints.GetWaypoints();
-        }
-
         public IEnumerable<CMFlare> getFlares()
         {
             return FindObjectsOfType<CMFlare>();
@@ -660,6 +651,7 @@ namespace TacViewDataLogger
                     }
                 } else
                 {
+                    getBullseye();
                 }
             }
 
