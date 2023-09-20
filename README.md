@@ -2,7 +2,9 @@
 
 ![header2](https://user-images.githubusercontent.com/1825214/85210315-da335c80-b30c-11ea-9200-7704414ddb69.png)
 
-Hello and welcome to the VTOL VR Tacview Data Logger mod! 
+Hello and welcome to the VTOL VR Tacview Data Logger mod!
+
+this mod is originally by [nebriv](https://github.com/nebriv/VTOLVR-TacviewLogger)
 
 It's been long time in the making and a fairly significant undertaking for me. The Tacview data log allows players to record their flights in real time and save all enemy, allied and player vehicle flight data. The data log (in ACMI format) can then be opened within the Tacview software for review, tactical analysis and determination as to why exactly the carrier did not clear you to land!
 
